@@ -16,9 +16,10 @@ namespace CalculatorApp
 
     public partial class Form1 : Form
     {
-        int mem = 0;
+        double mem = 0;
+        int divisor = 1;
         String input = "0";
-        String operation = "NO_OP";
+        String lastOp = "NO_OP";
 
 
         public Form1()
@@ -35,7 +36,7 @@ namespace CalculatorApp
                 if (input != "0")
                     input = input + "0";
 
-             
+
 
 
             }
@@ -50,7 +51,7 @@ namespace CalculatorApp
             if (input.Length < 9)
             {
                 // no input
-                if (input == "0" || input == "") 
+                if (input == "0" || input == "")
                     input = "1";
 
                 // input exists, append a 1 
@@ -199,99 +200,118 @@ namespace CalculatorApp
 
         private void Add_Click(object sender, EventArgs e)
         {
-            lastOp();
-            operation = "ADDITION";
-            // send input to mem if nothing in mem
-            if (mem == 0)
-            {
-                mem = Int32.Parse(input);
-                input = "";
-            }
+            lastOp = "ADDITION";
 
-            
-
-            // 2nd operand exists, perform operation
-            if (input != "")
+            if (input != "0")
             {
-                mem = Int32.Parse(input) + mem;
+                // send input to memory if empty
+                if (mem == 0)
+                    mem = Double.Parse(input);
+
+                // otherwise add input and mem
+                else
+                    mem += Double.Parse(input);
+
                 displayText.Text = mem.ToString();
-                input = "";
-            }
-            
 
+                // reset input 
+                input = "0";
+            }
 
         }
 
         private void Subtract_Click(object sender, EventArgs e)
         {
-            lastOp();
-            operation = "SUBTRACTION";
-            // send input to mem if nothing in mem
-            if (mem == 0)
+            lastOp = "SUBTRACTION";
+            if (input != "0")
             {
-                mem = Int32.Parse(input);
-                input = "";
-            }
+                // send input to memory if empty
+                if (mem == 0)
+                    mem = Double.Parse(input);
 
+                // otherwise subtract input and mem
+                else
+                    mem -= Double.Parse(input);
 
-
-            // 2nd operand exists, perform operation
-            if (input != "")
-            {
-                mem = Int32.Parse(input) - mem;
                 displayText.Text = mem.ToString();
-                input = "";
+
+                // reset input 
+                input = "0";
             }
         }
 
         private void Mult_Click(object sender, EventArgs e)
         {
-            lastOp();
-            operation = "MULTIPLICATION";
-            
-            // send input to mem if nothing in mem
-            if (mem == 0)
+            lastOp = "MULTIPLICATION";
+            if (input != "0")
             {
-                mem = Int32.Parse(input);
-                input = "";
-            }
+                // send input to memory if empty
+                if (mem == 0)
+                    mem = Double.Parse(input);
 
+                // otherwise multiply input and mem
+                else
+                    mem *= Double.Parse(input);
 
-
-            // 2nd operand exists, perform operation
-            if (input != "")
-            {
-                mem = Int32.Parse(input) * mem;
                 displayText.Text = mem.ToString();
-                input = "";
+
+                // reset input 
+                input = "0";
             }
         }
 
         private void Divide_Click(object sender, EventArgs e)
         {
-            lastOp();
-            operation = "DIVISION";
-            // send input to mem if nothing in mem
-            if (mem == 0)
+            lastOp = "DIVISION";
+
+            if (input != "0")
             {
-                mem = Int32.Parse(input);
-                input = "";
-            }
+                // send input to memory if empty
+                if (mem == 0)
+                    mem = Double.Parse(input);
 
+                // otherwise multiply input and mem
+                else
+                {
+                    if (Double.Parse(input) == 0.0)
+                        displayText.Text = "DIV BY 0";
+                    else
+                    {
+                        mem /= Double.Parse(input);
+                    }
 
-
-            // 2nd operand exists, perform operation
-            if (input != "")
-            {
-                mem = mem / Int32.Parse(input);
+                }
                 displayText.Text = mem.ToString();
-                input = "";
+
+                // reset input 
+                input = "0";
             }
         }
 
+
+
+     
+
+
         private void Equals_Click(object sender, EventArgs e)
         {
-            lastOp();
+            // do last op
+            switch (lastOp)
+            {
+                case "ADDITION": Add_Click(sender, e);
+                    break;
+                case "SUBTRACTION":
+                    Subtract_Click(sender, e);
+                    break;
+                case "MULTIPLICATION":
+                    Mult_Click(sender, e);
+                    break;
+                case "DIVISION":
+                    Divide_Click(sender, e);
+                    break;
+
+            }
+            displayText.Text = mem.ToString();
         }
 
         private void Clear_Click(object sender, EventArgs e)
@@ -311,74 +331,37 @@ namespace CalculatorApp
                 input = input.Substring(0, input.Length - 1);
 
                 // No more characters, set input to 0
-                if (input.Length == 0)
+                if (input.Length == 0 || input == "-")
                     input = "0";
 
                 displayText.Text = input;
             }
         }
-
-        private void lastOp()
+        
+        private void posNeg_Click(object sender, EventArgs e)
         {
-            // perform the last operation if input/mem is valid 
-            if (input != "" && mem != 0)
+            // get input
+            input = displayText.Text;
+
+            if (input != "0")
             {
-                switch (operation)
-                {
-                    case "ADDITION":
-                        addition();
-                        break;
-
-                    case "SUBTRACTION":
-                        subtraction();
-                        break;
-
-                    case "MULTIPLICATION":
-                        multiplication();
-                        break;
-
-                    case "DIVISION":
-                        division();
-                        break;
-                }
-
-
-                displayText.Text = mem.ToString();
-            }
-        }
-
-        private void addition()
-        {
-            mem = mem + Int32.Parse(input);
-            input = "";
-        }
-
-        private void subtraction()
-        {
-            mem = mem - Int32.Parse(input);
-            input = "";
-        }
-
-        private void multiplication()
-        {
-            mem = mem * Int32.Parse(input);
-            input = "";
-        }
-
-        private void division()
-        {
-            // div by 0 error
-            if (input == "0")
-            {
-                displayText.Text = "DIV BY 0 ERROR";
-                input = "";
-                operation = "NO_OP";
-                mem = 0;
+                double i = Double.Parse(input);
+                i = i * -1;
+                input = i.ToString();
+                mem = i;
+                displayText.Text = i.ToString();
+                input = "0";
             }
 
-            mem = mem / Int32.Parse(input);
 
+        }
 
+        private void dec_Click(object sender, EventArgs e)
+        {
+            if (!input.Contains("."))
+            {
+                input = input + ".";
+            }
         }
     }
 }

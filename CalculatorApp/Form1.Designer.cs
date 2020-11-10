@@ -222,6 +222,7 @@
             this.posNeg.TabIndex = 9;
             this.posNeg.Text = "+/-";
             this.posNeg.UseVisualStyleBackColor = true;
+            this.posNeg.Click += new System.EventHandler(this.posNeg_Click);
             // 
             // button0
             // 
@@ -243,6 +244,7 @@
             this.dec.TabIndex = 11;
             this.dec.Text = ".";
             this.dec.UseVisualStyleBackColor = true;
+            this.dec.Click += new System.EventHandler(this.dec_Click);
             // 
             // operationsPanel
             // 
