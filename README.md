@@ -27,3 +27,4 @@ To run the app, navigate to the app through CalculatorApp/bin/Debug and double-c
 
 ## Known Issues
 * Utilizing the negative sign button tends to have some random behaviors and displays the wrong output.
+* Resizing the window stretches the buttons across the screen 
