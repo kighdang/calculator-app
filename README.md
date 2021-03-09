@@ -5,6 +5,7 @@ Simple calculator app built using C# and WinForms
 * [General info](#general-info)
 * [Technologies](#technologies)
 * [Setup](#setup)
+* [Demo](#demo)
 * [Known Issues](#known-issues)
 
 
@@ -21,6 +22,7 @@ To install this project on your computer, download the code from the repository 
 
 To run the app, navigate to the app through CalculatorApp/bin/Debug and double-clicking on CalculatorApp.exe
 
+## Demo 
 <img src="images/calculator.png">
 
 ## Known Issues
